@@ -7,8 +7,15 @@ import ProductCard from '../../components/ProductCard/ProductCard'
 import { useHistory } from 'react-router-dom';
 import { goToHomePage } from '../../router/GoToPages';
 import { useProtectPage } from '../../hooks/useProtectPage';
+import { useSelector, useDispatch } from 'react-redux'
+import { setOrders } from '../../store/Orders/Orders.actions'
+
 
 function Cart(props) {
+
+    const stateTest = useSelector(state => state.orders)
+    console.log('Cart: stateTest:', stateTest)
+
     useProtectPage()
     const history = useHistory()
 

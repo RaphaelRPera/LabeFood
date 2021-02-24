@@ -21,7 +21,7 @@ export const PageBox = styled.div`
     max-width: 750px;
     min-height: 100vh;
     /* padding: 8px 0 69px 0; */
-    padding: ${props=> props.activeOrder ? '8px 0 187px 0' : '8px 0 69px 0' }
+    padding: ${props=> props.activeOrder ? '8px 0 187px 0' : '8px 0 69px 0' };
 `
 
 export const SearchBox = styled.div`
@@ -57,25 +57,29 @@ export const SearchImg = styled.img`
 `
 
 export const FilterBar = styled.div`
+    /* background-color: lightgreen; */
     box-sizing: border-box;
-    width: 360px;
+    width: 328px;
     /* height: 42px; */
     /* border: 1px solid black; */
     padding: 12px;
 
     display: flex;
+    /* justify-content: flex-start; */
     justify-content: flex-start;
     align-items: center;
     overflow: auto;
-    -webkit-scrollbar{display: none;}
+    /* overflow-x: scroll; */
+    /* -webkit-scrollbar{display: none;}
     -ms-overflow-style: none;
-    scrollbar-width: none;
+    scrollbar-width: none; */
 `
 
 export const FilterButton = styled.div`
     box-sizing: border-box;
     border: none;
     background-color: transparent;
+    /* background-color: lightsalmon; */
     /* width: 87px; */
     /* height: 18px; */
     font-family: Roboto;

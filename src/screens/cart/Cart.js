@@ -12,33 +12,60 @@ import { setOrders } from '../../store/Orders/Orders.actions'
 
 
 function Cart(props) {
-
-    const stateTest = useSelector(state => state.orders)
-    console.log('Cart: stateTest:', stateTest)
-
     useProtectPage()
     const history = useHistory()
 
     const restId = props.orderData.restaurant.id || null
-    const name =  props.orderData.restaurant.name || null
-    const shipping =  props.orderData.restaurant.shipping || null
-    const deliveryTime =  props.orderData.restaurant.deliveryTime || null
+    // const name =  props.orderData.restaurant.name || null
+    // const shipping =  props.orderData.restaurant.shipping || null
+    // const deliveryTime =  props.orderData.restaurant.deliveryTime || null
     const restAddress =  props.orderData.restaurant.address || null
-    const freightPrice = shipping || 0
+    // const freightPrice = shipping || 0
 
     const [userAddress, setUserAddress] = useState('')
     const [paymentMethod, setPaymentMethod] = useState(false)
 
-    const calcTotalPrice = () => {
-      let totalPrice = 0
-      if (props.orderData) { 
-        props.orderData.products.map(prod=>{
-          totalPrice += (prod.price * prod.orderQtde)
-        })
-      }
-        totalPrice += freightPrice
-        return totalPrice
-    }
+
+  //-------------------------------------------------------------------------
+    const actualOrders = useSelector(state => state.orders)
+    console.log('Cart: actualOrders:', actualOrders)
+    const order = actualOrders && actualOrders[0]
+
+    const {orders, restaurantOrder} = order && order
+    const orderProducts = orders && orders
+    
+    const {address, categories, deliveryTime, id, logoUrl, name, products} = restaurantOrder ? restaurantOrder : 0
+    
+    // console.log(address)
+
+    const shipping = restaurantOrder ? restaurantOrder.shipping : 0
+    const shippingFormat = shipping.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})
+  //----------------------------------------------------------------------
+
+
+  //-------------------------------------------------------------------------
+    let totalPrice = order && shipping
+
+    orderProducts && orderProducts.forEach(prod => {
+      totalPrice += (prod.price * prod.qtt)
+    });
+
+    const totalPriceFormat = totalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+  //----------------------------------------------------------------------
+
+
+
+
+    // const calcTotalPrice = () => {
+    //   let totalPrice = 0
+    //   if (props.orderData) { 
+    //     props.orderData.products.map(prod=>{
+    //       totalPrice += (prod.price * prod.orderQtde)
+    //     })
+    //   }
+    //     totalPrice += freightPrice
+    //     return totalPrice
+    // }
 
 
     const getFullAddress = () => {
@@ -49,7 +76,7 @@ function Cart(props) {
           setUserAddress(`${response.data.address.street}, ${response.data.address.number}`)
         })
         .catch(err=>{
-          console.log('Cart > getActiveOrder', err)
+          // console.log('Cart > getActiveOrder', err)
         })
     }
 
@@ -85,31 +112,62 @@ function Cart(props) {
     },[])
 
 
-    const renderRestAddress = () => {
-      return (props.orderData.restaurant.name && props.orderData.products.length > 0) ?
+  //-------------------------------------------------------------------------
+    const restaurantAddress = address ?
         <RestAddressBox>
-          <RestAddressLine> {`${name} ${restAddress.split(' - ')[1]}`} </RestAddressLine>
-          <RestAddressLine> {restAddress} </RestAddressLine>
-          <RestAddressLine> { `${deliveryTime} min`} </RestAddressLine>
+            <RestAddressLine> {`${name} - ${address.split(' - ')[1]}`} </RestAddressLine>
+            <RestAddressLine> {address} </RestAddressLine>
+            <RestAddressLine> { `${deliveryTime} min`} </RestAddressLine>
         </RestAddressBox>
       :
-      <EmptyCartMsg> <span> Carrinho vazio </span> </EmptyCartMsg>
-    }
+        <EmptyCartMsg> <span> Carrinho vazio </span> </EmptyCartMsg>
+  //----------------------------------------------------------------------
 
-    const renderCards = () => {
-      return props.orderData.products.length > 0 && 
-        props.orderData.products.map(prod=>{
-          return (
-            <ProductCard 
-              key={prod.id}
-              product={prod}
-              orderQtde={prod.orderQtde}
-              restaurant={props.orderData.restaurant}
-              formatOrders={props.formatOrders}
-            />
+
+    // const renderRestAddress = () => {
+    //   return (props.orderData.restaurant.name && props.orderData.products.length > 0) ?
+    //     <RestAddressBox>
+    //       <RestAddressLine> {`${name} ${restAddress.split(' - ')[1]}`} </RestAddressLine>
+    //       <RestAddressLine> {restAddress} </RestAddressLine>
+    //       <RestAddressLine> { `${deliveryTime} min`} </RestAddressLine>
+    //     </RestAddressBox>
+    //   :
+    //   <EmptyCartMsg> <span> Carrinho vazio </span> </EmptyCartMsg>
+    // }
+
+  
+  //-------------------------------------------------------------------------
+    const cards = orderProducts &&
+        orderProducts.map(prod => {
+            return (
+                <ProductCard 
+                key={prod.id}
+                product={prod}
+                orderQtde={prod.qtt}
+                // restaurant={props.orderData.restaurant}
+                restaurant={restaurantOrder}
+                formatOrders={props.formatOrders}
+              />
           )
         })
-    }
+  //----------------------------------------------------------------------
+
+
+
+    // const renderCards = () => {
+    //   return props.orderData.products.length > 0 && 
+    //     props.orderData.products.map(prod=>{
+    //       return (
+    //         <ProductCard 
+    //           key={prod.id}
+    //           product={prod}
+    //           orderQtde={prod.orderQtde}
+    //           restaurant={props.orderData.restaurant}
+    //           formatOrders={props.formatOrders}
+    //         />
+    //       )
+    //     })
+    // }
 
     return (
       <Main>
@@ -121,15 +179,19 @@ function Cart(props) {
               <UserAddressLine>{userAddress}</UserAddressLine>
             </UserAddressBox>
             
-            {renderRestAddress()}
+            {/* {renderRestAddress()} */}
+            {restaurantAddress}
 
             <CardBox>
-              {renderCards()}
+              {/* {renderCards()} */}
+              {cards}
             </CardBox>
             
-            <Freight> <span> {`Frete R$${freightPrice.toFixed(2).replace('.', ',')}`} </span> </Freight>
+            {/* <Freight> <span> {`Frete R$${freightPrice.toFixed(2).replace('.', ',')}`} </span> </Freight> */}
+            <Freight> <span> {`Frete ${shippingFormat}`} </span> </Freight>
 
-            <SubTotal> <span>SUBTOTAL</span> <span> {`R$${calcTotalPrice().toFixed(2).replace('.', ',')}`} </span> </SubTotal>
+            {/* <SubTotal> <span>SUBTOTAL</span> <span> {`R$${calcTotalPrice().toFixed(2).replace('.', ',')}`} </span> </SubTotal> */}
+            <SubTotal> <span>SUBTOTAL</span> <span> {totalPriceFormat} </span> </SubTotal>
 
             <PaymentTitle> Forma de pagamento </PaymentTitle>
 

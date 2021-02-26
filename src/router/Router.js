@@ -3,7 +3,7 @@ import Home from '../screens/home/Home'
 import SignUp from "../screens/login/SignUp"
 import Busca from "../screens/home/Busca"
 import Address from "../screens/login/Address"
-import Restaurant from "../screens/restaurant/RestaurantPage"
+// import Restaurant from "../screens/restaurant/RestaurantPage_old"
 import Cart from "../screens/cart/Cart"
 import Profile from "../screens/profile/Profile"
 import ProfileEdit from "../screens/profile/ProfileEdit"
@@ -12,6 +12,7 @@ import Login from "../screens/login/Login"
 import React from 'react';
 import HomeScreen from "../screens/homeScreen/HomeScreen"
 import Footer from "../components/Footer/Footer"
+import RestaurantPage from "../screens/restaurant/RestaurantPage"
 
 function Router(props) {
     return (
@@ -43,7 +44,8 @@ function Router(props) {
           </Route>
 
           <Route exact path='/restaurante/:id'>
-            <Restaurant formatOrders={props.formatOrders} />
+            {/* <Restaurant formatOrders={props.formatOrders} /> */}
+            <RestaurantPage formatOrders={props.formatOrders} />
           </Route>
 
           <Route exact path='/carrinho'>

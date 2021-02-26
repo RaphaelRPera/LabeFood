@@ -1,9 +1,18 @@
-import React, {useState } from 'react';
+import React, {useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import './App.css';
 import Router from './router/Router';
+import { getRestaurants } from './store/Restaurants/Restaurants.actions';
 
 
 function App() {
+  // console.log('App')
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getRestaurants())
+  }, [])
+  
+  
   //função passada via props para o ProductCard.js e estado controlado por ela
   const [orderData, setOrderData] = useState({restaurant: {}, products:[]})
 

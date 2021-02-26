@@ -35,7 +35,7 @@ function Home() {
 
     useEffect(()=>{
       // getRest()
-      dispatch(getRestaurants())
+      // dispatch(getRestaurants())
       // getActiveOrder()
     },[])
 

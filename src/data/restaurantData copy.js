@@ -1,4 +1,3 @@
-import picuiGrill from '../img/picuiGrill.png'
 
 
 const restaurantData = [
@@ -6,8 +5,7 @@ const restaurantData = [
         id: '0',
         address: 'Rua Relíquia, 33 - Casa Verde - São Paulo',
         deliveryTime: 15,
-        // logoUrl: 'https://picanhariadosamigos.com/wp-content/uploads/2020/11/cropped-logo-picanharia-dos-amigos.png',
-        logoUrl: picuiGrill,
+        logoUrl: 'https://picanhariadosamigos.com/wp-content/uploads/2020/11/cropped-logo-picanharia-dos-amigos.png',
         name: 'Picanharia dos Amigos',
         shipping: 7,
         categories: ['Churrasco', 'Carne'],
@@ -17,14 +15,14 @@ const restaurantData = [
                 name: 'Bife Ancho',
                 photoUrl: 'https://picanhariadosamigos.com/wp-content/uploads/2020/11/p1-768x512.jpg',
                 description: 'O Bife Ancho é um corte da região nobre do boi, de sabor irresistível!',
-                price: 76.90,
+                price: 89.9,
                 categories: ['Churrasco', 'Carne'],
             },
             {
                 id: 'bk0001',
-                name: 'Tábua Picanha',
-                photoUrl: 'https://d1ralsognjng37.cloudfront.net/023fa1a0-9007-4bdb-ab3d-7790d0b4c614.jpeg',
-                description: 'Com cortes de 400g in natura, acompanha nossas batatas rústicas, vinagrete e farofa. ',
+                name: 'Bife Ancho',
+                photoUrl: 'https://picanhariadosamigos.com/wp-content/uploads/2020/11/p1-768x512.jpg',
+                description: 'O Bife Ancho é um corte da região nobre do boi, de sabor irresistível!',
                 price: 89.9,
                 categories: ['Churrasco', 'Carne'],
             },

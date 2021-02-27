@@ -1,113 +1,73 @@
-import React, { useEffect, useState } from 'react'
-import { Container, CardContainer, ImageContainer, ContantContainer, ProductDescription, ProductTitle, ProductValue, QuantityButton, AddButton } from './styled'
-import ConfirmQuantity from '../ConfirmQuantity/ConfirmQuantity'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setOrders } from '../../store/Orders/Orders.actions'
+import { AddToCartContainer, BottomContainer, Container, Description, ImgContainer, InfoContainer, Name, OrderQtt, Price, QttButton, QuantityInput, TopContainer } from './style'
+import { useGetProdQtt } from '../../hooks/useGetProdQtt'
+import { formatOrders } from '../../hooks/formatOrder'
 
 
-const ProductCard = (props) => {
-    const { photoUrl, name, description, price  } = props.product
+export const ProductCard = (props) => {
+    const {restaurant, product} = props
+    const {id, name, photoUrl, description, price, categories} = product
+    const priceFormat = price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
-    const [ selectedQuantity, setSelectedQuantity ] = useState("")
-    const [ quantityPage, setQuantityPage ] = useState(false)
+    const [cartQtt, setCartQtt] = useState(0)
+    const [cartTotalPrice, setCartTotalPrice] = useState(0)
+    const totalPriceFormat = cartTotalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
-    const handleOpenPage = () => {
-        setQuantityPage(true)
-    }
 
-    const handleClosePage = () => {
-        setQuantityPage(false)
-    }
+    const dispatch = useDispatch()
+    const actualOrders = useSelector(state => state.orders)
+    const actualQtt = useGetProdQtt(id)
 
-    const onChangeSelect = (event) => {
-        setSelectedQuantity(event.target.value)
-    }
-    
-    const onClickCartAdd = (event) => { 
-        event.preventDefault()
-        props.formatOrders(props.restaurant, props.product, selectedQuantity) //função em App.js, para enviar para o carrinho
-        handleClosePage()
-    }
 
-    const removeValue = () => {
-        setSelectedQuantity(0)
-        props.formatOrders(props.restaurant, props.product, 0)  //função em App.js, para enviar para o carrinho
-    }
-
-    const handlePrice = () => {
-        if(price % 1 === 0) {
-            return (
-                <ProductValue>
-                    R${price}.00
-                </ProductValue>
-            )
+    const dispatchNewOrder = (newOrder) => {
+        if (newOrder === 'Other active order') {
+            setCartQtt(0)
+            window.alert('Existe um pedido de outro restaurante ativo. Aguarde sua conclusão')
         } else {
-            return (
-                <ProductValue>
-                    R${price}0
-                </ProductValue>
-            )
+            dispatch(setOrders(newOrder))
         }
     }
 
-    const renderConfirmQuantity = () => {
-        if (quantityPage) {
-            return (
-                <ConfirmQuantity
-                    selectQuantity={selectedQuantity}
-                    onChangeSelect={onChangeSelect}
-                    onClickCartAdd={onClickCartAdd}
-                />
-            )
-        }
+    const setQtt = (type) => {
+        let newQtt = type === 'add' ? cartQtt + 1 : type === 'subtract' ? cartQtt - 1 : actualQtt
+        newQtt = newQtt > 0 ? newQtt : 0
+        if (newQtt !== cartQtt) {setCartQtt(newQtt)}
+
+        const totalPrice = newQtt * price
+        setCartTotalPrice(totalPrice)
+        
+        const newOrder = formatOrders(restaurant, product, newQtt, actualOrders, 'ProductCard')
+        dispatchNewOrder(newOrder)
     }
 
-    // console.log()
 
+    useEffect(() => { setQtt() }, [])
 
-    useEffect(()=>{
-        if (props.orderQtde) {setSelectedQuantity(props.orderQtde)}
-    },[])
 
     return (
         <Container>
-            <CardContainer>
-                <ImageContainer src={photoUrl} />
-                <ContantContainer>
-                    <ProductTitle>
-                        {name}
-                    </ProductTitle>
-                    <ProductDescription>
-                        {description}
-                    </ProductDescription>
+            <InfoContainer>
+                <TopContainer>
+                    <Name> {name} </Name>
+                    {cartQtt > 0 && <OrderQtt> {`${cartQtt < 10 ? `0${cartQtt}` : cartQtt} • ${totalPriceFormat}`} </OrderQtt>}
+                </TopContainer>
 
-                    {handlePrice()}
-            
-                    {selectedQuantity ?  <QuantityButton>{selectedQuantity}</QuantityButton> : <></>}
+                <Description> {description} </Description>
+                
+                <BottomContainer>
+                    <Price> {priceFormat} </Price>
 
-                    {selectedQuantity ? 
-                    <AddButton 
-                        onClick={removeValue}
-                        borderColor={"#e02020"}
-                        color={"#e02020"}
-                    >
-                        Remover
-                    </AddButton>
-                    : 
-                    <AddButton 
-                        onClick={handleOpenPage}
-                        borderColor={"#5cb646"}
-                        color={"#5cb646"}
-                    >
-                        Adicionar
-                    </AddButton>
-                    }                  
-                </ContantContainer>
-            </CardContainer>
-            {renderConfirmQuantity()}
+                    <AddToCartContainer>
+                        <QttButton onClick={() => {setQtt('subtract')}}> - </QttButton>
+                        <QuantityInput> {cartQtt} </QuantityInput>
+                        <QttButton onClick={() => {setQtt('add')}} > + </QttButton>
+                    </AddToCartContainer>
+                </BottomContainer>
+            </InfoContainer>
+
+            {photoUrl && <ImgContainer photoUrl={photoUrl} />}
         </Container>
-
     )
 }
-
-export default ProductCard;
-
-

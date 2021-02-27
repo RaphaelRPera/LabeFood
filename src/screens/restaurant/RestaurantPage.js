@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { useProtectPage } from '../../hooks/useProtectPage'
 import { Address, CategoryContainer, CategoryItem, Container, Delivery, ImgContainer, InfoContainer, MainContainer, Name, ProductContainer, Shipping, ShippingContainer, Title } from './style'
-import { ProductCard } from './ProductCard/ProductCard'
+// import { ProductCard } from './ProductCard/ProductCard'
+import { ProductCard } from '../../components/ProductCard/ProductCard'
 import { HeaderTop } from '../../components/HeaderTop/HeaderTop'
 
 
@@ -27,15 +28,10 @@ const RestaurantPage = () => {
         });
     }
 
-
     const productCards = products &&
-        products.map((product, index) => {
-            if (index % 2 !== 0) {
-                return <ProductCard key={index} product={product} restaurant={restaurant} />
-            } else {
-                return <ProductCard key={index} product={product} restaurant={restaurant} />
-            }
-        })
+        products.map((product, index) => 
+            <ProductCard key={index} product={product} restaurant={restaurant} />
+        )
 
 
 

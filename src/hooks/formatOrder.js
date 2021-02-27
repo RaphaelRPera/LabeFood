@@ -1,9 +1,9 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+// import React from 'react'
+// import { useSelector } from 'react-redux'
 
 
-export const useFormatOrders = (restaurant, product, qtt, origin) => {
-    const actualOrders = useSelector(state => state.orders)
+export const formatOrders = (restaurant, product, qtt, actualOrders, origin) => {
+    // const actualOrders = useSelector(state => state.orders)
 
     let newOrders= actualOrders && JSON.parse(JSON.stringify(actualOrders))
 

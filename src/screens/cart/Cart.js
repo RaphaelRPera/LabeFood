@@ -3,7 +3,8 @@ import { HeaderTop } from '../../components/HeaderTop/HeaderTop';
 import { UserAddressBox, UserAddressLine, EmptyCartMsg, Freight, Main, PageBox, SubTotal, PaymentTitle, PaymentRadio, PaymentRadioLabel, ConfirmButton, PageBoxSon, CardBox, RestAddressBox, RestAddressLine } from './styled';
 import axios from 'axios'
 import { baseUrl } from '../../constants/axiosConstants';
-import ProductCard from '../../components/ProductCard/ProductCard'
+// import ProductCard from '../../components/ProductCard/ProductCard'
+import { ProductCard } from '../../components/ProductCard/ProductCard'
 import { useHistory } from 'react-router-dom';
 import { goToHomePage } from '../../router/GoToPages';
 import { useProtectPage } from '../../hooks/useProtectPage';
@@ -28,7 +29,7 @@ function Cart(props) {
 
   //-------------------------------------------------------------------------
     const actualOrders = useSelector(state => state.orders)
-    console.log('Cart: actualOrders:', actualOrders)
+    // console.log('Cart: actualOrders:', actualOrders)
     const order = actualOrders && actualOrders[0]
 
     const {orders, restaurantOrder} = order && order
@@ -137,7 +138,8 @@ function Cart(props) {
 
   
   //-------------------------------------------------------------------------
-    const cards = orderProducts &&
+    // console.log('Cart: actualOrders:', actualOrders)
+    const productCards = orderProducts &&
         orderProducts.map(prod => {
             return (
                 <ProductCard 
@@ -184,7 +186,8 @@ function Cart(props) {
 
             <CardBox>
               {/* {renderCards()} */}
-              {cards}
+              {/* {console.log(`Cart: render productCards`)} */}
+              {productCards}
             </CardBox>
             
             {/* <Freight> <span> {`Frete R$${freightPrice.toFixed(2).replace('.', ',')}`} </span> </Freight> */}
@@ -195,12 +198,12 @@ function Cart(props) {
 
             <PaymentTitle> Forma de pagamento </PaymentTitle>
 
-            <PaymentRadioLabel for='money' >
+            <PaymentRadioLabel htmlFor='money' >
               <PaymentRadio onChange={onChangeRadioButton} type='radio' id='money' name='paytype' value='money'/>
               Dinheiro
             </PaymentRadioLabel>
 
-            <PaymentRadioLabel for='credcard' >
+            <PaymentRadioLabel htmlFor='credcard'>
               <PaymentRadio onChange={onChangeRadioButton} type='radio' id='creditcard' name='paytype' value='creditcard'/>
               Cartão de crédito
             </PaymentRadioLabel>

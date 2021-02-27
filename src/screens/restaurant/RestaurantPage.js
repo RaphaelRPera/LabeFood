@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { useProtectPage } from '../../hooks/useProtectPage'
 import { Address, CategoryContainer, CategoryItem, Container, Delivery, ImgContainer, InfoContainer, MainContainer, Name, ProductContainer, Shipping, ShippingContainer, Title } from './style'
-// import { ProductCard } from './ProductCard/ProductCard'
 import { ProductCard } from '../../components/ProductCard/ProductCard'
 import { HeaderTop } from '../../components/HeaderTop/HeaderTop'
 

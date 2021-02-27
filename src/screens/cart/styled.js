@@ -227,6 +227,9 @@ export const ConfirmButton = styled.div`
 
     border-radius: 2px;
     background-color: rgba(92, 182, 70, 0.5);
+    background-color: ${props => props.submitting && 'rgb(220,220,220)'};
+    pointer-events: ${props => props.submitting && 'none'};
+    user-select: none;
 `
 
 

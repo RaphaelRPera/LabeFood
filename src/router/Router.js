@@ -45,7 +45,8 @@ function Router(props) {
 
           <Route exact path='/restaurante/:id'>
             {/* <Restaurant formatOrders={props.formatOrders} /> */}
-            <RestaurantPage formatOrders={props.formatOrders} />
+            {/* <RestaurantPage formatOrders={props.formatOrders} /> */}
+            <RestaurantPage/>
           </Route>
 
           <Route exact path='/carrinho'>

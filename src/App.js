@@ -3,13 +3,14 @@ import { useDispatch } from 'react-redux';
 import './App.css';
 import Router from './router/Router';
 import { getRestaurants } from './store/Restaurants/Restaurants.actions';
+import { getUser } from './store/User/User.actions';
 
 
 function App() {
-  // console.log('App')
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getRestaurants())
+    dispatch(getUser())
   }, [])
   
   
